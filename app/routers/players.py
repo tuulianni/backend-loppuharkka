@@ -1,38 +1,7 @@
 from fastapi import HTTPException, status, APIRouter
-from pydantic import BaseModel
+from ..database.models import *  
 
 router = APIRouter(prefix='/players', tags=['Players'])
-
-class PlayerBase(BaseModel):
-    name: str
-
-class PlayerDb(PlayerBase):
-    id: int
-
-class AllInfoBase(BaseModel):
-    name: str
-    event: str
-
-class AllInfoDb(AllInfoBase):
-    id: int  
-
-class EventsBase(BaseModel):
-    type: str
-    detail: str
-    timestamp: str
-    player_id: int
-
-class EventsDb(EventsBase):
-   id: int
-
-class EventIn(BaseModel):
-    type: str
-    detail: str
-    timestamp: str
-    player_id: int
-
-class EventInDb(EventIn):
-    id: int
 
 events = [
     {'id': 1, 'type': 'level_started', 'detail': "level_001", 'timestamp': '2023-01-13', 'player_id': 0}
