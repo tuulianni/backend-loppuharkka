@@ -1,8 +1,8 @@
 from datetime import datetime
 from fastapi import HTTPException
 
-from .database.schemas import EventsInDb
-from .database.database import SessionLocal, events
+from .database.schemas import PlayerDb, EventsInDb
+from .database.database import SessionLocal, players, events
 
 def get_db():
     db = SessionLocal()
@@ -12,7 +12,7 @@ def get_db():
         db.close()
 
 ######GET FUNCTIONS
-#def get_player_index(id):
+# def get_player_index(id):
 #     pid = None
 #     for index, player in enumerate(players):
 #         if player['id'] == id:

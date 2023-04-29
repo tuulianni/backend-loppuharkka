@@ -1,11 +1,9 @@
-from fastapi import HTTPException, status, APIRouter, Depends
+from fastapi import status, APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from ..functions import get_db
-from ..database.schemas import *  
-#from ..database.database import players
-from ..database.crud_players import create_player, read_players
-from ..database.models import Player
+from ..database.schemas import PlayerDb, AllInfoDb, PlayerBase  
+from ..database import crud_players
 
 router = APIRouter(prefix='/players', tags=['Players'])
 
@@ -13,26 +11,20 @@ router = APIRouter(prefix='/players', tags=['Players'])
 
 @router.get("", response_model=list[PlayerDb])
 def get_players(db: Session = Depends(get_db)): 
-    return read_players(db)
+    return crud_players.read_players(db)
 
-#palauttaa vain yhden tietyn asian id:perusteella
+#palauttaa vain yhden tietyn asian id:perusteella, MUTTA TÄSTÄ EI NYT TUU KAIKKEA TIETOA
 @router.get('/{id}', response_model=AllInfoDb)
-def get_players(db: Session, id):
-    player = db.query(Player).filter(Player.id == id).first()
-    if player is None:
-        raise HTTPException(
-            status_code=404, detail=f"Player with id {id} not found"
-        )
-    return player
+def get_players(id: int, db: Session = Depends(get_db)):
+    return crud_players.fetch_players(db, id)
 
 #######POSTS
 
 @router.post('', response_model=PlayerDb, status_code=status.HTTP_201_CREATED)
 def create_player(player_in: PlayerBase, db: Session = Depends(get_db)):
-    return create_player(db, player_in)
+    return crud_players.create_player(db, player_in)
 
-
-#####ROOT
+#####ROOT huvin ja urheilun vuoksi
 
 @router.get('/')
 def root():

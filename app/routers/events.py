@@ -2,7 +2,7 @@ from fastapi import status, APIRouter
 
 from ..functions import get_event_index, save_event
 from ..database.schemas import EventsDb, EventsInDb, EventsIn
-from ..database.database import events, types
+from ..database.database import events, types, players
 
 router = APIRouter(prefix='/events', tags=['Events'])
 

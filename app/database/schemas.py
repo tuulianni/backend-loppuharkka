@@ -11,7 +11,9 @@ class PlayerDb(PlayerBase):
 
 class AllInfoBase(BaseModel):
     name: str
-    event: str
+
+    class Config:
+        orm_mode = True
 
 class AllInfoDb(AllInfoBase):
     id: int  

@@ -2,9 +2,9 @@ from fastapi import FastAPI
 from .routers import players, events
 
 from .database.database import engine
-from .database.models import *
+from .database import models
 
-Base.metadata.create_all(bind=engine)
+models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
