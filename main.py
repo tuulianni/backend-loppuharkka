@@ -11,7 +11,7 @@ class PlayerDb(PlayerBase):
 
 class AllInfoBase(BaseModel):
     name: str
-    event: str
+    event: dict
 
 class AllInfoDb(AllInfoBase):
     id: int  
@@ -26,14 +26,16 @@ class EventsBase(BaseModel):
 class EventsDb(EventsBase):
    player_id: int
 
+events = [
+    {'id': 1, 'type': 'level_started', 'detail': "level_001", 'timestamp': '2023-01-13', 'player_id': 0}
+]
+
 players = [
-    {'id': 0, 'name': 'Pekka Puupää', 'event': 'dont have'},
+    {'id': 0, 'name': 'Pekka Puupää', 'event': {'id': 1, 'type': 'level_started', 'detail': "level_001", 'timestamp': '2023-01-13', 'player_id': id}},
     {'id': 1, 'name': 'Jukka Juupää', 'event': 'dont have'},
 ]
 
-events = [
-    {'id': 1, 'type': 'level_started', 'detail': "level_1212_001", 'timestamp': '2023-01-13', 'player_id': 0}
-]
+types = ['level_started', 'level_solved']
 
 def get_player_index(id):
     pid = None
@@ -66,6 +68,10 @@ def get_players():
 def get_events():
     return events
 
+@app.get("/types")
+def get_types():
+    return types
+
 #palauttaa vain yhden tietyn asian id:perusteella
 @app.get('/players/{id}', response_model=AllInfoDb)
 def get_players(id: int):
@@ -73,17 +79,17 @@ def get_players(id: int):
     return players[pid]
 
 @app.get('/players/{id}/events', response_model=EventsDb)
-def get_events(id: int):
-    eid = get_event_index(id)
+def get_events(player_id: int):
+    eid = get_event_index(player_id)
     return events[eid]
 
 #######
 
-@app.delete('/players/{id}')
-def delete_player(id: int):
-    pid = get_player_index(id)
-    del players[pid]
-    return {'message': f'Player id {id} deleted'}
+# @app.delete('/players/{id}')
+# def delete_player(id: int):
+#     pid = get_player_index(id)
+#     del players[pid]
+#     return {'message': f'Player id {id} deleted'}
 
 #######
 
@@ -99,6 +105,9 @@ def create_player(player_in: PlayerBase):
 def create_event(event_in: EventsBase):
     new_id = len(events)
     event = EventsDb(**event_in.dict(), id = new_id)
+
+    events.append(event.dict())
+    return event
 
 @app.get('/')
 def root():
