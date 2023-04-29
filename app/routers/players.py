@@ -1,7 +1,7 @@
 from fastapi import HTTPException, status, APIRouter
 from pydantic import BaseModel
 
-router = APIRouter()
+router = APIRouter(prefix='/players', tags=['Players'])
 
 class PlayerBase(BaseModel):
     name: str
@@ -11,7 +11,7 @@ class PlayerDb(PlayerBase):
 
 class AllInfoBase(BaseModel):
     name: str
-    event: dict
+    event: str
 
 class AllInfoDb(AllInfoBase):
     id: int  
@@ -71,7 +71,7 @@ def get_event_index(id):
    # return eid
 
 #kutsuttaessa polkua tämä funktio triggaa
-@router.get("/players", response_model=list[PlayerDb])
+@router.get("", response_model=list[PlayerDb])
 def get_players(): 
     return players
 
@@ -84,19 +84,19 @@ def get_types():
     return types
 
 #palauttaa vain yhden tietyn asian id:perusteella
-@router.get('/players/{id}', response_model=AllInfoDb)
+@router.get('/{id}', response_model=AllInfoDb)
 def get_players(id: int):
     pid = get_player_index(id)
     return players[pid]
 
-@router.get('/players/{id}/events', response_model=EventsDb)
+@router.get('/{id}/events', response_model=EventsDb)
 def get_events(player_id: int):
     eid = get_event_index(player_id)
     return events[eid]
 
 #######
 
-# @router.delete('/players/{id}')
+# @router.delete('/{id}')
 # def delete_player(id: int):
 #     pid = get_player_index(id)
 #     del players[pid]
@@ -104,7 +104,7 @@ def get_events(player_id: int):
 
 #######
 
-@router.post('/players', response_model=PlayerDb, status_code=status.HTTP_201_CREATED)
+@router.post('', response_model=PlayerDb, status_code=status.HTTP_201_CREATED)
 def create_player(player_in: PlayerBase):
     new_id = len(players)
     player = PlayerDb(**player_in.dict(), id = new_id)
@@ -113,7 +113,7 @@ def create_player(player_in: PlayerBase):
     return player
 
 #jos player id ei ole olemassa? jos type ei ole olemassa?
-@router.post('/players/{id}/events', response_model=EventsDb, status_code=status.HTTP_201_CREATED)
+@router.post('/{id}/events', response_model=EventsDb, status_code=status.HTTP_201_CREATED)
 def create_event(event_in: EventsBase):
     new_id = len(events)
     event = EventsDb(**event_in.dict(), id = new_id)
