@@ -1,7 +1,9 @@
+import time
 from fastapi import HTTPException
 
-from .database.models import EventsDb, PlayerDb
+from .database.models import EventsDb, PlayerDb, EventsInDb
 from .database.database import players, events
+
 
 ######GET FUNCTIONS
 def get_player_index(id):
@@ -38,6 +40,7 @@ def save_player(player_in):
 
 def save_event(event_in):
     new_id = len(events)
-    event = EventsDb(**event_in.dict(), id = new_id)
+    new_timestamp = time.time()
+    event = EventsInDb(**event_in.dict(), id = new_id, timestamp = new_timestamp)
 
     events.append(event.dict())

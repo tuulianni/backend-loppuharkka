@@ -1,5 +1,7 @@
 from pydantic import BaseModel
 
+import time
+
 class PlayerBase(BaseModel):
     name: str
 
@@ -21,3 +23,12 @@ class EventsBase(BaseModel):
 
 class EventsDb(EventsBase):
    id: int
+
+class EventsIn(BaseModel):
+    type: str
+    detail: str
+    player_id: int
+
+class EventsInDb(EventsIn):
+    id: int
+    timestamp: str

@@ -1,7 +1,7 @@
 from fastapi import status, APIRouter
 
 from ..functions import get_event_index, save_event
-from ..database.models import EventsBase, EventsDb
+from ..database.models import EventsBase, EventsDb, EventsInDb, EventsIn
 from ..database.database import events, types
 
 router = APIRouter(prefix='/events', tags=['Events'])
@@ -20,6 +20,6 @@ def get_events(player_id: int):
     return events[eid]
 
 #jos player id ei ole olemassa? jos type ei ole olemassa?
-@router.post('/{id}', response_model=EventsDb, status_code=status.HTTP_201_CREATED)
-def create_event(event_in: EventsBase):
+@router.post('/{id}', response_model=EventsInDb, status_code=status.HTTP_201_CREATED)
+def create_event(event_in: EventsIn):
     return save_event(event_in)
