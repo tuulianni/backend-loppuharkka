@@ -14,6 +14,14 @@ def fetch_events(db: Session, player_id):
         )
     return event
 
+def fetch_with_type(db: Session, type):
+    event = db.query(models.Event).filter(models.Event.type == type).first()
+    if event is None:
+        raise HTTPException(
+            status_code=404, detail=f"This type of events cannot be found"
+        )
+    return event
+
 def create_event(db: Session, event_in: schemas.EventsIn):
     event = models.Event(**event_in.dict(), timestamp = "aika tähän")
     db.add(event)

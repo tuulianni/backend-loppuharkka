@@ -22,7 +22,14 @@ def get_types():
 def get_events(player_id: int, db: Session = Depends(get_db)):
     return crud_events.fetch_events(db, player_id)
 
+#ei toimi vielä
+@router.get('/with_types')
+def get_with_type(type: str = '', db: Session = Depends(get_db)):
+    return crud_events.fetch_with_type(db, type)
+
+
 #jos player id ei ole olemassa? jos type ei ole olemassa?
 @router.post('/{id}', response_model=EventsInDb, status_code=status.HTTP_201_CREATED)
 def create_event(event_in: EventsIn, db: Session = Depends(get_db)):
     return crud_events.create_event(db, event_in)
+
