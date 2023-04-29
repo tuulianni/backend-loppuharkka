@@ -27,6 +27,7 @@ def get_events(player_id: int, db: Session = Depends(get_db)):
 def get_with_type(type: str = '', db: Session = Depends(get_db)):
     return crud_events.fetch_with_type(db, type)
 
+#####POST
 
 #jos player id ei ole olemassa? jos type ei ole olemassa?
 @router.post('/{id}', response_model=EventsInDb, status_code=status.HTTP_201_CREATED)
