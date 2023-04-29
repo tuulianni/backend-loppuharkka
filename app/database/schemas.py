@@ -22,13 +22,13 @@ class EventsBase(BaseModel):
     type: str
     detail: str
     timestamp: str
-    player_id: int
+    id: int
 
     class Config:
         orm_mode = True
 
 class EventsDb(EventsBase):
-    id: int
+    player_id: int
 
 class EventsIn(BaseModel):
     type: str
