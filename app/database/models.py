@@ -21,12 +21,3 @@ class EventsBase(BaseModel):
 
 class EventsDb(EventsBase):
    id: int
-
-class EventIn(BaseModel):
-    type: str
-    detail: str
-    timestamp: str
-    player_id: int
-
-class EventInDb(EventIn):
-    id: int
