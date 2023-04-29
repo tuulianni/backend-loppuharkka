@@ -14,14 +14,17 @@ class AllInfoBase(BaseModel):
     event: str
 
 class AllInfoDb(AllInfoBase):
-    id: int
-   
+    id: int  
 
 class EventsBase(BaseModel):
-    events: str
+    id: int
+    type: str
+    detail: str
+    timestamp: str
+    player_id: int
 
 class EventsDb(EventsBase):
-    id: int
+   player_id: int
 
 players = [
     {'id': 0, 'name': 'Pekka Puupää', 'event': 'dont have'},
@@ -43,10 +46,25 @@ def get_player_index(id):
             status_code=404, detail=f"Player with id {id} not found")
     return pid
 
+def get_event_index(id):
+    eid = None
+    for index, event in enumerate(events):
+        if event['player_id'] == id:
+            eid = index
+            break
+    if eid is None:
+        raise HTTPException(
+            status_code=404, detail=f"Event with player_id {id} not found")
+    return eid
+
 #kutsuttaessa polkua tämä funktio triggaa
 @app.get("/players", response_model=list[PlayerDb])
 def get_players(): 
     return players
+
+@app.get("/events", response_model=list[EventsDb])
+def get_events():
+    return events
 
 #palauttaa vain yhden tietyn asian id:perusteella
 @app.get('/players/{id}', response_model=AllInfoDb)
@@ -56,8 +74,8 @@ def get_players(id: int):
 
 @app.get('/players/{id}/events', response_model=EventsDb)
 def get_events(id: int):
-    pid = get_player_index(id)
-    return players[pid]
+    eid = get_event_index(id)
+    return events[eid]
 
 #######
 
