@@ -26,6 +26,15 @@ class EventsBase(BaseModel):
 class EventsDb(EventsBase):
    player_id: int
 
+class EventIn(BaseModel):
+    type: str
+    detail: str
+    timestamp: str
+    player_id: int
+
+class EventInDb(EventIn):
+    id: int
+
 events = [
     {'id': 1, 'type': 'level_started', 'detail': "level_001", 'timestamp': '2023-01-13', 'player_id': 0}
 ]
@@ -56,7 +65,7 @@ def get_event_index(id):
             break
     if eid is None:
         raise HTTPException(
-            status_code=404, detail=f"Event with player_id {id} not found")
+            status_code=404, detail=f"Events with player_id {id} not found")
     return eid
 
 #kutsuttaessa polkua tämä funktio triggaa
@@ -101,8 +110,9 @@ def create_player(player_in: PlayerBase):
     players.append(player.dict())
     return player
 
-@app.post('/players/{id}/events', response_model=EventsDb, status_code=status.HTTP_201_CREATED)
-def create_event(event_in: EventsBase):
+#jos player id ei ole olemassa? jos type ei ole olemassa?
+@app.post('/players/{id}/events', response_model=EventInDb, status_code=status.HTTP_201_CREATED)
+def create_event(event_in: EventIn):
     new_id = len(events)
     event = EventsDb(**event_in.dict(), id = new_id)
 
