@@ -1,22 +1,28 @@
-import time
+from datetime import datetime
 from fastapi import HTTPException
 
-from .database.models import EventsDb, PlayerDb, EventsInDb
-from .database.database import players, events
+from .database.schemas import EventsInDb
+from .database.database import SessionLocal, events
 
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 ######GET FUNCTIONS
-def get_player_index(id):
-    pid = None
-    for index, player in enumerate(players):
-        if player['id'] == id:
-            pid = index
-            break
-    if pid is None:
-        raise HTTPException(
-            status_code=404, 
-            detail=f"Player with id {id} not found")
-    return pid
+#def get_player_index(id):
+#     pid = None
+#     for index, player in enumerate(players):
+#         if player['id'] == id:
+#             pid = index
+#             break
+#     if pid is None:
+#         raise HTTPException(
+#             status_code=404, 
+#             detail=f"Player with id {id} not found")
+#     return pid
 
 #rikki, palauttaa vain yhden ja haluaisin et palauttaa kaikki
 def get_event_index(id):
@@ -32,15 +38,11 @@ def get_event_index(id):
 
 ####POST FUNCTIONS
 
-def save_player(player_in):
-    new_id = len(players)
-    player = PlayerDb(**player_in.dict(), id = new_id)
-    players.append(player.dict())
-    return player
-
 def save_event(event_in):
     new_id = len(events)
-    new_timestamp = time.time()
+    now = datetime.now()
+    new_timestamp = now.strftime("%m/%d/%Y, %H:%M:%S")
+    print(new_timestamp)
     event = EventsInDb(**event_in.dict(), id = new_id, timestamp = new_timestamp)
 
     events.append(event.dict())

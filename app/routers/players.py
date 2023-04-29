@@ -1,29 +1,35 @@
-from fastapi import status, APIRouter
+from fastapi import HTTPException, status, APIRouter, Depends
+from sqlalchemy.orm import Session
 
-from ..functions import get_player_index, save_player
-from ..database.models import *  
-from ..database.database import players
+from ..functions import get_db
+from ..database.schemas import *  
+#from ..database.database import players
+from ..database.crud_players import create_player, read_players
+from ..database.models import Player
 
 router = APIRouter(prefix='/players', tags=['Players'])
 
 #######GETS
 
 @router.get("", response_model=list[PlayerDb])
-def get_players(): 
-    return players
+def get_players(db: Session = Depends(get_db)): 
+    return read_players(db)
 
 #palauttaa vain yhden tietyn asian id:perusteella
 @router.get('/{id}', response_model=AllInfoDb)
-def get_players(id: int):
-    pid = get_player_index(id)
-    return players[pid]
+def get_players(db: Session, id):
+    player = db.query(Player).filter(Player.id == id).first()
+    if player is None:
+        raise HTTPException(
+            status_code=404, detail=f"Player with id {id} not found"
+        )
+    return player
 
 #######POSTS
 
 @router.post('', response_model=PlayerDb, status_code=status.HTTP_201_CREATED)
-def create_player(player_in: PlayerBase):
-    return save_player(player_in)
-
+def create_player(player_in: PlayerBase, db: Session = Depends(get_db)):
+    return create_player(db, player_in)
 
 
 #####ROOT

@@ -1,34 +1,18 @@
-from pydantic import BaseModel
+from sqlalchemy import Column, Integer, String
 
-import time
+from .database import Base
 
-class PlayerBase(BaseModel):
-    name: str
+class Player(Base):
+    __tablename__ = 'players'
 
-class PlayerDb(PlayerBase):
-    id: int
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, nullable=False)
 
-class AllInfoBase(BaseModel):
-    name: str
-    event: str
+class Event(Base):
+    __tablename__ = 'events'
 
-class AllInfoDb(AllInfoBase):
-    id: int  
-
-class EventsBase(BaseModel):
-    type: str
-    detail: str
-    timestamp: str
-    player_id: int
-
-class EventsDb(EventsBase):
-   id: int
-
-class EventsIn(BaseModel):
-    type: str
-    detail: str
-    player_id: int
-
-class EventsInDb(EventsIn):
-    id: int
-    timestamp: str
+    id = Column(Integer, primary_key=True, index=True)
+    type = Column(String, nullable=False)
+    detail = Column(String, nullable=False)
+    timestamp = Column(String, nullable=False)
+    player_id = Column(Integer, nullable=False)
