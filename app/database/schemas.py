@@ -24,6 +24,9 @@ class EventsBase(BaseModel):
     timestamp: str
     player_id: int
 
+    class Config:
+        orm_mode = True
+
 class EventsDb(EventsBase):
     id: int
 
@@ -31,6 +34,9 @@ class EventsIn(BaseModel):
     type: str
     detail: str
     player_id: int
+
+    class Config:
+        orm_mode = True
 
 class EventsInDb(EventsIn):
     timestamp: str
