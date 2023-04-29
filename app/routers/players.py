@@ -8,7 +8,6 @@ router = APIRouter(prefix='/players', tags=['Players'])
 
 #######GETS
 
-#kutsuttaessa polkua tämä funktio triggaa
 @router.get("", response_model=list[PlayerDb])
 def get_players(): 
     return players
