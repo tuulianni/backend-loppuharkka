@@ -11,7 +11,7 @@ pip install -r req.txt
 ## Run
 
 ```
-uvicorn main:app --reload
+uvicorn app.main:app --reload
 ```
 
 ## Go to
