@@ -2,6 +2,8 @@
 
 This is the final assignment of the backend course.
 
+HOXX! This is made with Python 3.9.13
+
 ## Install
 
 First you need to create venv and activate it. 
