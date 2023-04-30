@@ -4,6 +4,14 @@ This is the final assignment of the backend course.
 
 ## Install
 
+First you need to create venv and activate it. 
+If you use Visual Studio Code, I advise to use their own Python: Create Enviroment-thing,
+but if you don't use it, I hope that this link will help you:
+
+https://docs.python.org/3.10/library/venv.html
+
+When you have venv and you had activate it, you can install rest with
+
 ```
 pip install -r req.txt
 ```
@@ -19,6 +27,6 @@ uvicorn app.main:app --reload
 http://127.0.0.1:8000/docs
 
 
-There will be some notes when I have time to write more or when I will know what I want to write here.
+That's all, have a nice time!
 
 xoxo

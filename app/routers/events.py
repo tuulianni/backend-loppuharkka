@@ -3,7 +3,6 @@ from sqlalchemy.orm import Session
 
 from ..functions import get_db
 from ..database.schemas import EventsDb, EventsInDb, EventsIn
-from ..database.database import types
 from ..database import crud_events
 
 router = APIRouter(prefix='/events', tags=['Events'])
@@ -16,10 +15,6 @@ def get_events(type: str = '', db: Session = Depends(get_db)):
     if type != '':
         return crud_events.fetch_with_type(db, type)
     return crud_events.read_events(db)
-
-@router.get("/types")
-def get_types():
-    return types
 
 @router.get('/{id}', response_model=list[EventsDb])
 def get_events_with_id(player_id: int, db: Session = Depends(get_db)):

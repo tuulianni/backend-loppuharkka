@@ -22,11 +22,11 @@ class Event(Base):
 
     player = relationship('Player', back_populates='events')
 
-#yritän kovakoodata nämä
+#yritän kovakoodata nämä, 
 class Type(Base):
     __tablename__ = 'types'
 
-    types = Column(String, primary_key=True)
+    type = Column(String, primary_key=True)
 
     def __init__(self):
         self.types = '.'.join(['level_started', 'level_solved'])
