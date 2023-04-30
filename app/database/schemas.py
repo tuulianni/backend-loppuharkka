@@ -35,17 +35,7 @@ class PlayerBase(BaseModel):
         orm_mode = True
 
 class PlayerDb(PlayerBase):
-    id: int
-
-class AllInfoBase(BaseModel):
-    name: str
-    events: EventsBase
-
-    class Config:
-        orm_mode = True
-
-class AllInfoDb(AllInfoBase):
-    id: int  
+    id: int 
 
 class EventsIn(BaseModel):
     type: str
@@ -58,5 +48,15 @@ class EventsIn(BaseModel):
 class EventsInDb(EventsIn):
     id: int
     timestamp: str
+
+class AllInfoBase(BaseModel):
+    name: str
+
+    class Config:
+        orm_mode = True
+
+class AllInfoDb(AllInfoBase):
+    id: int 
+    events: list[EventsBase]
     
     

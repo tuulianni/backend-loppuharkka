@@ -6,9 +6,8 @@ from . import models, schemas
 def read_events(db: Session):
     return db.query(models.Event).all()
 
-#miten saan ne kaikki tulostettua, all() ei toiminu :(
 def fetch_events(db: Session, player_id):
-    event = db.query(models.Event).filter(models.Event.player_id == player_id).first()
+    event = db.query(models.Event).filter(models.Event.player_id == player_id).all()
     if event is None:
         raise HTTPException(
             status_code=404, detail=f"Event with player_id {player_id} not found"
@@ -22,15 +21,6 @@ def fetch_with_type(db: Session, type: str):
             status_code=404, detail=f"This type of events cannot be found"
         )
     return temp
-
-#ei toimi
-# def fetch_with_type(db: Session, type):
-#     event = db.query(models.Event).filter(models.Event.type == type).first()
-#     if event is None:
-#         raise HTTPException(
-#             status_code=404, detail=f"This type of events cannot be found"
-#         )
-#     return event
 
 def create_event(db: Session, event_in: schemas.EventsIn):
     today = date.today()

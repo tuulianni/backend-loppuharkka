@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship
 
 from .database import Base
 
@@ -8,6 +9,8 @@ class Player(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
 
+    events = relationship('Event', back_populates='player')
+
 class Event(Base):
     __tablename__ = 'events'
 
@@ -15,7 +18,9 @@ class Event(Base):
     type = Column(String, nullable=False)
     detail = Column(String, nullable=False)
     timestamp = Column(String, nullable=False)
-    player_id = Column(Integer, nullable=False)
+    player_id = Column(Integer, ForeignKey('players.id'))
+
+    player = relationship('Player', back_populates='events')
 
 #yritän kovakoodata nämä
 class Type(Base):

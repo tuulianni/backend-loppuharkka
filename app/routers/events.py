@@ -21,8 +21,8 @@ def get_events(type: str = '', db: Session = Depends(get_db)):
 def get_types():
     return types
 
-@router.get('/{id}', response_model=EventsDb)
-def get_events(player_id: int, db: Session = Depends(get_db)):
+@router.get('/{id}', response_model=list[EventsDb])
+def get_events_with_id(player_id: int, db: Session = Depends(get_db)):
     return crud_events.fetch_events(db, player_id)
 
 #####POST
