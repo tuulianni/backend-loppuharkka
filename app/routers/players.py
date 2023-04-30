@@ -29,11 +29,3 @@ def create_player(player_in: PlayerBase, db: Session = Depends(get_db)):
 @router.get('/')
 def root():
     return {'message': 'if you see only this, you have to go to 127.0.0.1:8000/docs'}
-
-#######DELETE
-
-# @router.delete('/{id}')
-# def delete_player(id: int):
-#     pid = get_player_index(id)
-#     del players[pid]
-#     return {'message': f'Player id {id} deleted'}
