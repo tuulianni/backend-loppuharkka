@@ -1,3 +1,4 @@
+from datetime import date
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from . import models, schemas
@@ -10,10 +11,11 @@ def fetch_events(db: Session, player_id):
     event = db.query(models.Event).filter(models.Event.player_id == player_id).first()
     if event is None:
         raise HTTPException(
-            status_code=404, detail=f"Event with player_id {id} not found"
+            status_code=404, detail=f"Event with player_id {player_id} not found"
         )
     return event
 
+#ei toimi
 def fetch_with_type(db: Session, type):
     event = db.query(models.Event).filter(models.Event.type == type).first()
     if event is None:
@@ -23,7 +25,10 @@ def fetch_with_type(db: Session, type):
     return event
 
 def create_event(db: Session, event_in: schemas.EventsIn):
-    event = models.Event(**event_in.dict(), timestamp = "aika tähän")
+    today = date.today()
+    day = date(today.year, 1, 1) + (today - date(today.year, 1, 1))
+    new_ts = day.isoformat()
+    event = models.Event(**event_in.dict(), timestamp = new_ts)
     db.add(event)
     db.commit()
     db.refresh(event)

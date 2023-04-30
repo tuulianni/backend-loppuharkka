@@ -1,22 +1,20 @@
+from datetime import date, timedelta
 from pydantic import BaseModel
+from pydantic.validators import int_validator
 
-class PlayerBase(BaseModel):
-    name: str
+class DayThisYear():
 
-    class Config:
-        orm_mode = True
+    @classmethod
+    def __get_validators__(cls):
+        yield int_validator
+        yield cls.validate
 
-class PlayerDb(PlayerBase):
-    id: int
+    @classmethod
+    def validate(cls, v: int):
+        date_to_str = date.today().replace(month=1, day=1) + timedelta(days=v)
+        return date_to_str.strftime("%Y-%m-%d")
 
-class AllInfoBase(BaseModel):
-    name: str
-
-    class Config:
-        orm_mode = True
-
-class AllInfoDb(AllInfoBase):
-    id: int  
+#####
 
 class EventsBase(BaseModel):
     type: str
@@ -30,6 +28,25 @@ class EventsBase(BaseModel):
 class EventsDb(EventsBase):
     player_id: int
 
+class PlayerBase(BaseModel):
+    name: str
+
+    class Config:
+        orm_mode = True
+
+class PlayerDb(PlayerBase):
+    id: int
+
+class AllInfoBase(BaseModel):
+    name: str
+    events: EventsBase
+
+    class Config:
+        orm_mode = True
+
+class AllInfoDb(AllInfoBase):
+    id: int  
+
 class EventsIn(BaseModel):
     type: str
     detail: str
@@ -39,7 +56,7 @@ class EventsIn(BaseModel):
         orm_mode = True
 
 class EventsInDb(EventsIn):
-    timestamp: str
     id: int
+    timestamp: str
     
     

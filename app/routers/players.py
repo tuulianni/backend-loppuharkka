@@ -13,7 +13,7 @@ router = APIRouter(prefix='/players', tags=['Players'])
 def get_players(db: Session = Depends(get_db)): 
     return crud_players.read_players(db)
 
-#palauttaa vain yhden tietyn asian id:perusteella, MUTTA TÄSTÄ EI NYT TUU KAIKKEA TIETOA
+#tämä on rikki, koska koitan keksiä miten saa eventin mukaan
 @router.get('/{id}', response_model=AllInfoDb)
 def get_players(id: int, db: Session = Depends(get_db)):
     return crud_players.fetch_players(db, id)
