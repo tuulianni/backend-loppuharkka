@@ -16,3 +16,15 @@ class Event(Base):
     detail = Column(String, nullable=False)
     timestamp = Column(String, nullable=False)
     player_id = Column(Integer, nullable=False)
+
+#yritän kovakoodata nämä
+class Type(Base):
+    __tablename__ = 'types'
+
+    types = Column(String, primary_key=True)
+
+    def __init__(self):
+        self.types = '.'.join(['level_started', 'level_solved'])
+
+
+

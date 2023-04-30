@@ -15,14 +15,22 @@ def fetch_events(db: Session, player_id):
         )
     return event
 
-#ei toimi
-def fetch_with_type(db: Session, type):
-    event = db.query(models.Event).filter(models.Event.type == type).first()
-    if event is None:
-        raise HTTPException(
+def fetch_with_type(db: Session, type: str):
+    temp = db.query(models.Event).filter(models.Event.type == type).all()
+    if temp is None:
+            raise HTTPException(
             status_code=404, detail=f"This type of events cannot be found"
         )
-    return event
+    return temp
+
+#ei toimi
+# def fetch_with_type(db: Session, type):
+#     event = db.query(models.Event).filter(models.Event.type == type).first()
+#     if event is None:
+#         raise HTTPException(
+#             status_code=404, detail=f"This type of events cannot be found"
+#         )
+#     return event
 
 def create_event(db: Session, event_in: schemas.EventsIn):
     today = date.today()

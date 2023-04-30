@@ -15,7 +15,7 @@ def get_players(db: Session = Depends(get_db)):
 
 #tämä on rikki, koska koitan keksiä miten saa eventin mukaan
 @router.get('/{id}', response_model=AllInfoDb)
-def get_players(id: int, db: Session = Depends(get_db)):
+def get_players_by_id(id: int, db: Session = Depends(get_db)):
     return crud_players.fetch_players(db, id)
 
 #######POSTS
