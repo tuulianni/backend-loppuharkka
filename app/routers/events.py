@@ -27,11 +27,11 @@ def get_events(player_id: int, db: Session = Depends(get_db)):
     return crud_events.fetch_events(db, player_id)
 
 #ei toimi vielä
-@router.get('/with_types')
-def get_with_type(type: str = '', db: Session = Depends(get_db)):
-    if type != '':
-        pass
-    return crud_events.fetch_with_type(db)
+# @router.get('/with_types')
+# def get_with_type(type: str = '', db: Session = Depends(get_db)):
+#     if type != '':
+#         pass
+#     return crud_events.fetch_with_type(db)
 
 #####POST
 
