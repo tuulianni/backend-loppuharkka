@@ -1,7 +1,7 @@
 from fastapi import Depends, status, APIRouter
 from sqlalchemy.orm import Session
 
-from ..functions import get_db
+from ..database.database import get_db
 from ..database.schemas import EventsDb, EventsInDb, EventsIn
 from ..database import crud_events
 
@@ -24,6 +24,6 @@ def get_events_with_id(player_id: int, db: Session = Depends(get_db)):
 
 #jos player id ei ole olemassa? jos type ei ole olemassa?
 @router.post('/{id}', response_model=EventsInDb, status_code=status.HTTP_201_CREATED)
-def create_event(event_in: EventsIn, db: Session = Depends(get_db)):
-    return crud_events.create_event(db, event_in)
+def create_event(player_id: int, event_in: EventsIn, db: Session = Depends(get_db)):
+    return crud_events.create_event(player_id, db, event_in)
 

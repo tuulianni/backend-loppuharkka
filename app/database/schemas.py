@@ -27,7 +27,6 @@ class PlayerDb(PlayerBase):
 class EventsIn(BaseModel):
     type: str
     detail: str
-    player_id: int
 
     class Config:
         orm_mode = True
@@ -35,6 +34,7 @@ class EventsIn(BaseModel):
 class EventsInDb(EventsIn):
     id: int
     timestamp: str
+    player_id: int
 
 #kaikkien tietojen tulostukseen
 class AllInfoBase(BaseModel):

@@ -1,7 +1,7 @@
 from fastapi import status, APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from ..functions import get_db
+from ..database.database import get_db
 from ..database.schemas import PlayerDb, AllInfoDb, PlayerBase  
 from ..database import crud_players
 
